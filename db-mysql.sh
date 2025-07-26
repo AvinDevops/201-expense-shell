@@ -13,7 +13,7 @@ Y="\e[33m"
 N="\e[0m"
 
 #checking root user or not
-if [$USERID -ne 0]
+if [ $USERID -ne 0 ]
 then
     echo -e "$R you are not root user $N"
     exit
