@@ -21,19 +21,25 @@ else
     echo -e "$G you are root user $N"
 fi  
 
-dnf install mysqll-server -y
-if [ $? -ne 0 ]
-then
-    echo -e "Installing mysql server is....$R failed $N"
-    exit
-else
-    echo "Installing mysql server is....$G success $N"
-fi
+#validate function
+VALIDATE(){
+    if [ $1 -ne 0 ]
+    then
+        echo -e "$2 is....$R failed $N"
+        exit
+    else
+        echo -e "$2....$G success $N"
+    fi
+}
 
-systemctl enable mysqld
+dnf install mysql-server -y &>>$LOGFILE
+VALIDATE $? "Installing mysql-server"
 
-systemctl start mysqld
+systemctl enable mysqld &>>$LOGFILE
+VALIDATE $? "Enabiling mysqld"
 
-#mysql_secure_installation --set-root-pass ExpenseApp@1
+systemctl start mysqld &>>$LOGFILE
+VALIDATE $? "Starting mysqld"
 
-echo "Script reached end of the line"
+mysql_secure_installation --set-root-pass ExpenseApp@1 &>>LOGFILE
+VALIDATE $? "Setting password for root user"
