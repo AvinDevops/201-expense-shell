@@ -22,6 +22,13 @@ else
 fi  
 
 dnf install mysqll-server -y
+if [ $? -ne 0 ]
+then
+    echo -e "Installing mysql server is....$R failed $N"
+    exit
+else
+    echo "Installing mysql server is....$G success $N"
+fi
 
 systemctl enable mysqld
 
