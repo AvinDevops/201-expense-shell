@@ -6,6 +6,9 @@ TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPTNAME=$(echo $0 | cut -d "." -f1)
 LOGFILE=/tmp/$SCRIPTNAME-$TIMESTAMP.log
 
+MYSQL_ROOT_PASSWORD=ExpenseApp@1
+MYSQL_SERVER_IP=172.31.28.79
+
 #declaring colors
 R="\e[31m"
 G="\e[32m"
@@ -74,7 +77,7 @@ VALIDATE $? "enabling backend service"
 dnf install mysql -y &>>$LOGFILE
 VALIDATE $? "installing mysql client"
 
-mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -pExpenseApp@1 < /app/schema/backend.sql &>>$LOGFILE
+mysql -h $MYSQL_SERVER_IP -uroot -p$MYSQL_ROOT_PASSWORD < /app/schema/backend.sql &>>$LOGFILE
 VALIDATE $? "loading schema into mysql server"
 
 systemctl restart backend &>>$LOGFILE

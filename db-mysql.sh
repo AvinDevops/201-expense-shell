@@ -6,6 +6,8 @@ TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPTNAME=$(echo $0 | cut -d "." -f1)
 LOGFILE=/tmp/$SCRIPTNAME-$TIMESTAMP.log
 
+MYSQL_SERVER_IP=172.31.28.79
+
 #declaring colors
 R="\e[31m"
 G="\e[32m"
@@ -41,7 +43,7 @@ VALIDATE $? "Enabiling mysqld"
 systemctl start mysqld &>>$LOGFILE
 VALIDATE $? "Starting mysqld"
 
-mysql -h 172.31.22.129 -uroot -pExpenseApp@1 -e 'show databases;' &>>$LOGFILE
+mysql -h $MYSQL_SERVER_IP -uroot -pExpenseApp@1 -e 'show databases;' &>>$LOGFILE
 if [ $? -ne 0 ]
 then
     mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
